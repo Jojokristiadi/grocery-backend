@@ -1,10 +1,10 @@
-package com.grocery.app;
+package com.mp16.homemart;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AppApplicationTests {
+class HomeMartApplicationTests {
 
 	@Test
 	void contextLoads() {
