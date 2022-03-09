@@ -1,7 +1,7 @@
 package com.mp16.homemart.model;
 
-import lombok.*;
 import javax.persistence.*;
+import lombok.*;
 import java.util.Collection;
 import java.util.List;
 
