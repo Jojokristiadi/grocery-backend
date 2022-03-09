@@ -21,28 +21,34 @@
 
             <h1>Registration</h1>
 
-            <form th:action="@{/registration}" method="post" th:object="${user}">
-                <div class="form-group">
+            <form th:action="@{/register}" method="post" th:object="${registrationRequestDTO}">
+                <div class="form-group row">
                     <label class="control-label" for="name_field">Nama</label>
                     <input id="name_field" type="text"
-                           class="form-control" th:field="*{name}"
-                           required autofocus="autofocus">
+                           class="form-control" th:field="*{name}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback"></div>
                 </div>
-                <div class="form-group">
+                <div class="form-group row">
                     <label class="control-label" for="email_field">Email</label>
                     <input id="email_field" type="text"
-                           class="form-control" th:field="*{email}"
-                           required autofocus="autofocus">
+                           class="form-control" th:field="*{email}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback"></div>
                 </div>
-                <div class="form-group">
+                <div class="form-group row">
                     <label class="control-label" for=password_field>Password</label>
                     <input id="password_field" type="password"
-                           class="form-control" th:field="*{password}"
-                           required autofocus="autofocus">
+                           class="form-control" th:field="*{password}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback"></div>
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Register</button>
-                    <span>Sudah punya akun? <a href="/" th:href="@{/login}">Login di sini</a> </span>
+                <div class="form-group row">
+                    <label class="control-label" for=confirm_password_field>Confirm Password</label>
+                    <input id="confirm_password_field" type="password"
+                           class="form-control" th:field="*{rpassword}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('rpassword')}" th:errors="*{rpassword}" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group row">
+                    <button type="submit" class="btn btn-primary">Daftar</button>
+                    <span>Sudah punya akun? <a href="/" th:href="@{/login}">Masuk di sini</a> </span>
                 </div>
             </form>
 
