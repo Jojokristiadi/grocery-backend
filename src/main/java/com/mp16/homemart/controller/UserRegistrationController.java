@@ -1,18 +1,13 @@
 package com.mp16.homemart.controller;
 
-import com.mp16.homemart.service.UserService;
-import com.mp16.homemart.dto.UserRegistrationDto;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/registration")
 public class UserRegistrationController {
 
-    private UserService userService;
+   /* private UserService userService;
 
     public UserRegistrationController(UserService userService) {
         super();
@@ -33,5 +28,5 @@ public class UserRegistrationController {
     public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto){
         userService.save(registrationDto);
         return "redirect:/registration?success";
-    }
+    }*/
 }
