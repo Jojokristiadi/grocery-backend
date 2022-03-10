@@ -44,8 +44,5 @@ public class RootController {
         return user;
     }
 
-    /*@GetMapping("/authenticated")
-    public String authenticated(Model model){
-        model.addAttribute("user", getClass());
-    }*/
+
 }
