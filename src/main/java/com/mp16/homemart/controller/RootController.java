@@ -27,7 +27,7 @@ public class RootController {
         return "login";
     }
 
-    @GetMapping("/")
+    @GetMapping(value = "/")
     public String home(Model model) {
         model.addAttribute("user", getCurrentAuth());
         ModelAndView mav = new ModelAndView("hello");

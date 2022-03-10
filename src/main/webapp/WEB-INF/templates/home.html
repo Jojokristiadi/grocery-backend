@@ -4,11 +4,16 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Title</title>
+    <link th:href = "@{/static/css/me.css}" rel="stylesheet">
 </head>
 <body>
 <div sec:authorize="isAuthenticated()">
     Authenticated as <span th:text="${user.name}"></span>
+    asdAasd
 </div>
+
+<script type="text/javascript" th:src="@{/static/js/me.js}"></script>
 </body>
 </html>

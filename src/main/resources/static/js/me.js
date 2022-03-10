@@ -1,3 +1,1 @@
-$(document).ready(function(){
-    alert("I'm active");
-});
+alert("I'm active");
