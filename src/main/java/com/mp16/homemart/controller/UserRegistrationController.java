@@ -55,7 +55,7 @@ public class UserRegistrationController {
             bindingResult.addError(new FieldError(
                     "registrationRequestDTO",
                     "email",
-                    "Email sudah ada yang punya"
+                    String.format("Email %s sudah ada yang punya", registrationRequestDTO.getEmail())
             ));
         }
 
