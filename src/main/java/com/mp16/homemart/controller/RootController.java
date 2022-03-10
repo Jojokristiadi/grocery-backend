@@ -18,7 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -51,7 +50,7 @@ public class RootController {
     * *********************************
     * */
 
-    @GetMapping("login")
+    @GetMapping(value = "login")
     public String login(){
         User user = getCurrentAuth();
         if (user != null){
@@ -60,16 +59,16 @@ public class RootController {
         return "auth/login";
     }
 
-    @GetMapping("/register")
+    @GetMapping(value = "register")
     public String viewRegister(@ModelAttribute RegistrationRequestDTO registrationRequestDTO, Model model){
-        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() != null){
+        if (getCurrentAuth() != null){
             return "redirect:/";
         }
         model.addAttribute("request", registrationRequestDTO);
-        return "auth/register";
+        return "register";
     }
 
-    @PostMapping("/register")
+    @PostMapping("register")
     public String register(@Valid RegistrationRequestDTO registrationRequestDTO, BindingResult bindingResult){
         log.info(">>> registration Request DTO : {}", registrationRequestDTO.toString());
 
@@ -94,7 +93,7 @@ public class RootController {
         }
 
         if (bindingResult.hasErrors()){
-            return "auth/register";
+            return "register";
         }
 
         //return registrationService.register(registrationRequestDTO);
