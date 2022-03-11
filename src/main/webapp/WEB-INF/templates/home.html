@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" type="text/css">
     <link rel="stylesheet" th:href = "@{/static/css/layout-home.css}" type="text/css">
 
+    <link rel="stylesheet" th:href = "@{/static/css/my-weather.css}" type="text/css">
+
     <link rel="stylesheet" th:href = "@{/static/css/me.css}" type="text/css">
 </head>
 <body id="body-pd">
@@ -34,40 +36,20 @@
             </div> <a th:href="@{logout}" class="nav_link"> <i class='bi bi-box-arrow-left nav_icon'></i> <span class="nav_name">Keluar</span> </a>
         </nav>
     </div>
-    <div class="height-100 bg-light ps-4 pe-4 pt-2">
-        <div class="row mb-4">
-            <div class="col-md-12">
-                <div class="d-flex">
-                    <h4>Beranda</h4>
-                </div>
-            </div>
+    <div class="api">
+        <div class="container">🌞 This demo needs an OpenWeather API key to work. <a target="_blank" href="https://home.openweathermap.org/users/sign_up">Get yours here for free!</a>
         </div>
-        <div>
-            <div class="row">
-                <div class="row">
-                    <div class="col-2">
-                        <button type="button" class="btn btn-primary
-                                waves-effect waves-light" data-bs-toggle="modal"
-                                data-bs-target="#myModal">Standard modal</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <table>
-                        <thead>
-                        <tr>
-                            <td>Name</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="item : ${categories}">
-                            <td th:text="${item.name}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
+    </div>
+    <section class="top-banner">
+        <div class="container">
+            <h1 class="heading">Beranda</h1>
         </div>
+    </section>
+    <section class="ajax-section">
+        <div class="container">
+            <ul class="cities"></ul>
+        </div>
+    </section>
     </div>
 
 
@@ -76,5 +58,92 @@
     <script th:src="@{/static/js/bootstrap.bundle.js}" type="text/javascript"></script>
     <script th:src="@{/static/js/sweetalert2.all.min.js}" type="text/javascript"></script>
     <script th:src="@{/static/js/layout-home.js}" type="text/javascript"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            /*SEARCH BY USING A CITY NAME (e.g. athens) OR A COMMA-SEPARATED CITY NAME ALONG WITH THE COUNTRY CODE (e.g. athens,gr)*/
+            const form = document.querySelector(".top-banner form");
+            const input = document.querySelector(".top-banner input");
+            const msg = document.querySelector(".top-banner .msg");
+            const list = document.querySelector(".ajax-section .cities");
+            /*PUT YOUR OWN KEY HERE - THIS MIGHT NOT WORK
+            SUBSCRIBE HERE: https://home.openweathermap.org/users/sign_up*/
+            /*const apiKey = "2d30228a43c24078a2e35224221103";*/
+            const apiKey = "4d8fb5b93d4af21d66a2948710284366";
+            /*2d30228a43c24078a2e35224221103*/
+
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${"Malang"}&appid=${"4d8fb5b93d4af21d66a2948710284366"}&units=metric`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const { main, name, sys, weather } = data;
+                    const icon = `https://openweathermap.org/img/wn/${
+                        weather[0]["icon"]
+                    }@2x.png`;
+
+                    const li = document.createElement("li");
+                    li.classList.add("city");
+                    const markup = `
+        <h2 class="city-name" data-name="${name},${sys.country}">
+          <span>${name}</span>
+          <sup>${sys.country}</sup>
+        </h2>
+        <div class="city-temp">${Math.round(main.temp)}<sup>°C</sup></div>
+        <figure>
+          <img class="city-icon" src=${icon} alt=${weather[0]["main"]}>
+          <figcaption>${weather[0]["description"]}</figcaption>
+        </figure>
+      `;
+                    li.innerHTML = markup;
+                    list.appendChild(li);
+                })
+                .catch(() => {
+                    msg.textContent = "Please search for a valid city 😩";
+                });
+
+            /*form.addEventListener("submit", e => {
+                e.preventDefault();
+                const listItems = list.querySelectorAll(".ajax-section .city");
+                const inputVal = input.value;
+
+                //ajax here
+                const url = `https://api.openweathermap.org/data/2.5/weather?q=${"Malang"}&appid=${"4d8fb5b93d4af21d66a2948710284366"}&units=metric`;
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        const { main, name, sys, weather } = data;
+                        const icon = `https://openweathermap.org/img/wn/${
+                            weather[0]["icon"]
+                        }@2x.png`;
+
+                        const li = document.createElement("li");
+                        li.classList.add("city");
+                        const markup = `
+        <h2 class="city-name" data-name="${name},${sys.country}">
+          <span>${name}</span>
+          <sup>${sys.country}</sup>
+        </h2>
+        <div class="city-temp">${Math.round(main.temp)}<sup>°C</sup></div>
+        <figure>
+          <img class="city-icon" src=${icon} alt=${weather[0]["main"]}>
+          <figcaption>${weather[0]["description"]}</figcaption>
+        </figure>
+      `;
+                        li.innerHTML = markup;
+                        list.appendChild(li);
+                    })
+                    .catch(() => {
+                        msg.textContent = "Please search for a valid city 😩";
+                    });
+
+                msg.textContent = "";
+                form.reset();
+                input.focus();
+            });*/
+        });
+    </script>
 </body>
 </html>
