@@ -108,13 +108,14 @@ public class RootController {
      * */
     @GetMapping(value = "product")
     public String viewProduct(Model model){
-        /*model.addAttribute("categories", categoryService.getGetAllCategory());*/
+        model.addAttribute("user", getCurrentAuth());
         model.addAttribute("products", productService.getAllProduct());
         return "product/product";
     }
 
     @GetMapping(value = "view-new-product")
     public String viewNewProduct(@ModelAttribute Product productDTO, Model model){
+        model.addAttribute("user", getCurrentAuth());
         model.addAttribute("productDTO", productDTO);
         model.addAttribute("categories", categoryService.getGetAllCategory());
         return "product/new_product";
@@ -132,6 +133,7 @@ public class RootController {
 
     @GetMapping(value = "view-edit-product/{id}")
     public String viewEditProduct(@PathVariable (value = "id") long id, Model model){
+        model.addAttribute("user", getCurrentAuth());
         Product product = productService.get(id);
         model.addAttribute("categories", categoryService.getGetAllCategory());
         model.addAttribute("productDTO", product);
@@ -162,12 +164,14 @@ public class RootController {
 
     @GetMapping(value = "category")
     public String viewCategory(Model model){
+        model.addAttribute("user", getCurrentAuth());
         model.addAttribute("categories", categoryService.getGetAllCategory());
         return "category/category";
     }
 
     @GetMapping(value = "view-new-category")
     public String viewNewCategory(@ModelAttribute CategoryDTO categoryDTO, Model model){
+        model.addAttribute("user", getCurrentAuth());
         model.addAttribute("request", categoryDTO);
         return "category/new_category";
     }
@@ -188,6 +192,7 @@ public class RootController {
 
     @GetMapping(value = "view-edit-category/{id}")
     public String viewEditCategory(@PathVariable (value = "id") long id, Model model){
+        model.addAttribute("user", getCurrentAuth());
         Category category = categoryService.get(id);
         model.addAttribute("categoryDTO", category);
         return "category/edit_category";
@@ -218,12 +223,14 @@ public class RootController {
      * */
     @GetMapping(value = "user")
     public String viewUser(Model model){
+        model.addAttribute("user", getCurrentAuth());
         model.addAttribute("users", appUserService.getAllUser());
         return "user/user";
     }
 
     @GetMapping(value = "view-new-user")
     public String viewNewUser(@ModelAttribute User userDTO, Model model){
+        model.addAttribute("user", getCurrentAuth());
         model.addAttribute("userDTO", userDTO);
         return "user/new_user";
     }
@@ -239,6 +246,7 @@ public class RootController {
 
     @GetMapping(value = "view-edit-user/{id}")
     public String viewEditUser(@PathVariable (value = "id") long id, Model model){
+        model.addAttribute("user", getCurrentAuth());
         User user = appUserService.get(id);
         model.addAttribute("userDTO", user);
         return "user/edit_user";
