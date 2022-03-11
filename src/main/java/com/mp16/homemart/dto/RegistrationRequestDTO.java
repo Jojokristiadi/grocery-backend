@@ -15,14 +15,14 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class RegistrationRequestDTO {
 
-    @NotBlank(message = "Masukan nama Anda")
+    @NotBlank(message = "Nama tidak boleh kosong")
     private final String name;
-    @NotBlank(message = "Masukan email Anda")
+    @NotBlank(message = "Email tidak boleh kosong")
     @Email(message = "Masukan email yang valid")
     private final String email;
-    @NotBlank(message = "Masukan kata sandi")
-    @Length(min = 4, message = "Kata sandi harus minimal terdiri dari 4 karakter")
+    @NotBlank(message = "Password tidak boleh kosong")
+    @Length(min = 4, message = "Password harus minimal terdiri dari 4 karakter")
     private final String password;
-    @NotBlank(message = "Masukan lagi password Anda")
+    @NotBlank(message = "Konfirmasi password tidak boleh kosong")
     private final String rpassword;
 }

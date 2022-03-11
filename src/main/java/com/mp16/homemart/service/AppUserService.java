@@ -1,5 +1,6 @@
 package com.mp16.homemart.service;
 
+import com.mp16.homemart.model.Category;
 import com.mp16.homemart.model.User;
 import com.mp16.homemart.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -40,5 +43,19 @@ public class AppUserService implements UserDetailsService {
 
     public boolean userExists(String email){
         return userRepository.findByEmail(email).isPresent();
+    }
+
+    public List<User> getAllUser() {
+        return userRepository.findAll();
+    }
+    public void save(User user) {
+        userRepository.save(user);
+    }
+    public User get(long id) {
+        return userRepository.findById(id).get();
+    }
+
+    public void delete(long id) {
+        userRepository.deleteById(id);
     }
 }

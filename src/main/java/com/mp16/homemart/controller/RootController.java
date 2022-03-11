@@ -76,39 +76,16 @@ public class RootController {
     public String register(@Valid RegistrationRequestDTO registrationRequestDTO, BindingResult bindingResult){
         log.info(">>> registration Request DTO : {}", registrationRequestDTO.toString());
 
-        // check user if exists
-        if (appUserService.userExists(registrationRequestDTO.getEmail())){
-            bindingResult.addError(new FieldError(
-                    "registrationRequestDTO",
-                    "email",
-                    String.format("Email %s sudah ada yang punya", registrationRequestDTO.getEmail())
-            ));
-        }
-
-        // check password match
-        if (registrationRequestDTO.getPassword() != null && registrationRequestDTO.getRpassword() != null){
-            if (!registrationRequestDTO.getPassword().equals(registrationRequestDTO.getRpassword())){
-                bindingResult.addError(new FieldError(
-                        "registrationRequestDTO",
-                        "rpassword",
-                        "Password harus sama dengan konfirmasi password"
-                ));
-            }
-        }
-
-        if (bindingResult.hasErrors()){
+        if (validatingUser(registrationRequestDTO, bindingResult).hasErrors() || bindingResult.hasErrors()) {
             return "register";
         }
-
-        //return registrationService.register(registrationRequestDTO);
-        //return "redirect:/login";
 
         return appUserService.signUpUser(
                 new User(
                         registrationRequestDTO.getName(),
                         registrationRequestDTO.getEmail(),
                         registrationRequestDTO.getPassword(),
-                        AppUserRole.USER
+                        "USER"
                 )
         );
     }
@@ -232,6 +209,8 @@ public class RootController {
     }
 
 
+
+
     /*
      * *********************************
      * User
@@ -239,6 +218,91 @@ public class RootController {
      * */
     @GetMapping(value = "user")
     public String viewUser(Model model){
+        model.addAttribute("users", appUserService.getAllUser());
         return "user/user";
+    }
+
+    @GetMapping(value = "view-new-user")
+    public String viewNewUser(@ModelAttribute User userDTO, Model model){
+        model.addAttribute("userDTO", userDTO);
+        return "user/new_user";
+    }
+
+    @PostMapping(value = "new-user")
+    public String addNewUser(@Valid @ModelAttribute("userDTO") User userDTO, BindingResult result) {
+        if (validatingUser(userDTO, result).hasErrors() || result.hasErrors()) {
+            return "user/new_user";
+        }
+        appUserService.save(userDTO);
+        return "redirect:/user?addsuccess";
+    }
+
+    @GetMapping(value = "view-edit-user/{id}")
+    public String viewEditUser(@PathVariable (value = "id") long id, Model model){
+        User user = appUserService.get(id);
+        model.addAttribute("userDTO", user);
+        return "user/edit_user";
+    }
+
+    @PostMapping(value = "/edit-user")
+    public String editUser(@Valid @ModelAttribute("userDTO") User userDTO, BindingResult result) {
+        if (validatingUser(userDTO, result).hasErrors() || result.hasErrors()) {
+            return "user/edit_user";
+        }
+        appUserService.save(userDTO);
+        return "redirect:/user?editsuccess";
+    }
+
+    @RequestMapping(value = "/delete-user/{id}")
+    public String deleteUser(@PathVariable(name = "id") int id) {
+        appUserService.delete(id);
+        return "redirect:/user?deletesuccess";
+    }
+
+    private BindingResult validatingUser(User user, BindingResult result){
+        // check user if exists
+        if (appUserService.userExists(user.getEmail())){
+            result.addError(new FieldError(
+                    "userDTO",
+                    "email",
+                    String.format("Email %s sudah ada yang punya", user.getEmail())
+            ));
+        }
+
+        // check password match
+        if (user.getPassword() != null && user.getRpassword() != null){
+            if (!user.getPassword().equals(user.getRpassword())){
+                result.addError(new FieldError(
+                        "userDTO",
+                        "rpassword",
+                        "Password harus sama dengan konfirmasi password"
+                ));
+            }
+        }
+        return result;
+    }
+
+
+    private BindingResult validatingUser(RegistrationRequestDTO user, BindingResult result){
+        // check user if exists
+        if (appUserService.userExists(user.getEmail())){
+            result.addError(new FieldError(
+                    "registrationRequestDTO",
+                    "email",
+                    String.format("Email %s sudah ada yang punya", user.getEmail())
+            ));
+        }
+
+        // check password match
+        if (user.getPassword() != null && user.getRpassword() != null){
+            if (!user.getPassword().equals(user.getRpassword())){
+                result.addError(new FieldError(
+                        "registrationRequestDTO",
+                        "rpassword",
+                        "Password harus sama dengan konfirmasi password"
+                ));
+            }
+        }
+        return result;
     }
 }

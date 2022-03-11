@@ -1,7 +1,12 @@
 package com.mp16.homemart.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,15 +27,24 @@ public class User implements UserDetails {
     private long id;
 
     @Column
+    @NotBlank(message = "Nama tidak boleh kosong")
     private String name;
 
     @Column
+    @NotBlank(message = "Email tidak boleh kosong")
+    @Email(message = "Masukan email yang valid")
     private String email;
 
     @Column
+    @NotBlank(message = "Password tidak boleh kosong")
+    @Length(min = 4, message = "Password harus minimal terdiri dari 4 karakter")
     private String password;
 
+    @NotBlank(message = "Konfirmasi password tidak boleh kosong")
+    private String rpassword;
+
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "Role user tidak boleh kosong")
     private AppUserRole role;
 
     private boolean locked = false;
@@ -44,12 +58,12 @@ public class User implements UserDetails {
     )
     private Collection<Role> role;*/
 
-    public User(String name, String email, String password, AppUserRole role) {
+    public User(String name, String email, String password, String role) {
         super();
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = role;
+        this.role = AppUserRole.valueOf(role);
     }
 
     public User(String name, String email, String password, AppUserRole role, boolean locked, boolean enabled) {

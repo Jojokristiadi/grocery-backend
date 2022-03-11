@@ -36,10 +36,70 @@
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="d-flex">
-                <h4>Produk</h4>
+                <h4>Data User</h4>
             </div>
         </div>
     </div>
+
+    <div th:if="${param.addsuccess}" class="row">
+        <div class="col">
+            <div class="crud alert alert-info alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-lg me-2"></i><strong>Berhasil</strong> tambah data
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    <div th:if="${param.editsuccess}" class="row">
+        <div class="crud alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-lg me-2"></i><strong>Berhasil</strong> edit data
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    <div th:if="${param.deletesuccess}" class="row">
+        <div class="crud alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-lg me-2"></i><strong>Berhasil</strong> hapus data
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <a class="btn btn-outline-info" th:href="@{user}" type="button">
+                <span class="bi bi-arrow-clockwise"></span> Refresh
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a type="button" th:href="@{view-new-user}" class="btn btn-outline-primary float-end">
+                <span class="bi bi-plus-lg"> Tambah Data</span>
+            </a>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="table-light">
+            <tr>
+                <td>Id</td>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Role</td>
+                <td>Aksi</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${users}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.email}"></td>
+                <td th:text="${item.role}"></td>
+                <td>
+                    <a th:href="@{view-edit-user/{id}(id=${item.id})}">Edit</a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a th:href="@{delete-user/{id}(id=${item.id})}">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 </div>
 
 <script th:src="@{/static/js/jquery-3.6.0.min.js}" type="text/javascript"></script>
