@@ -43,16 +43,36 @@
       </div>
     </div>
   </div>
+  <div th:if="${param.addsuccess}" class="row">
+    <div class="col">
+      <div class="crud alert alert-info alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-lg me-2"></i><strong>Berhasil</strong> tambah data
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+  <div th:if="${param.editsuccess}" class="row">
+    <div class="crud alert alert-success alert-dismissible fade show" role="alert">
+      <i class="bi bi-check-lg me-2"></i><strong>Berhasil</strong> edit data
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
+  <div th:if="${param.deletesuccess}" class="row">
+    <div class="crud alert alert-warning alert-dismissible fade show" role="alert">
+      <i class="bi bi-check-lg me-2"></i><strong>Berhasil</strong> hapus data
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </div>
   <div class="row mb-3">
     <div class="col-md-6">
-      <button class="btn btn-outline-info" onclick="location.reload();" type="button">
+      <a class="btn btn-outline-info" th:href="@{category}" type="button">
         <span class="bi bi-arrow-clockwise"></span> Refresh
-      </button>
+      </a>
     </div>
     <div class="col-md-6">
-      <button class="btn btn-outline-primary float-end">
+      <a type="button" th:href="@{view-new-category}" class="btn btn-outline-primary float-end">
         <span class="bi bi-plus-lg"> Tambah Data</span>
-      </button>
+      </a>
     </div>
   </div>
   <div class="table-responsive">
@@ -71,9 +91,9 @@
         <td th:text="${item.name}"></td>
         <td th:text="${item.parent}"></td>
         <td>
-          <a th:href="@{'/edit/' + ${item.id}}">Edit</a>
+          <a th:href="@{view-edit-category/{id}(id=${item.id})}">Edit</a>
           &nbsp;&nbsp;&nbsp;
-          <a th:href="@{'/delete/' + ${item.id}}">Delete</a>
+          <a th:href="@{delete-category/{id}(id = ${item.id})}">Delete</a>
         </td>
       </tr>
       </tbody>
@@ -82,50 +102,6 @@
   </div>
 </div>
 <!--Container Main end-->
-
-
-
-<!-- sample modal content -->
-<!--<div id="addModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-  <script th:inline="javascript" th:if="${#fields.hasErrors('*')}">$("#addModal").modal("show");</script>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form th:action="@{/add-category}" th:object="${categoryDTO}" method="post">
-        <div class="modal-header">
-          <h5 class="modal-title" id="myModalLabel">Tambah Kategori</h5>
-          <button type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="row mb-3">
-            <div class="col-12">
-              <label for="name_field"
-                     class="form-label">Nama Kategori</label>
-              <input id="name_field" type="text" placeholder="Masukan nama kategori" name="name"
-                     class="form-control" th:field="*{name}">
-              <div class="text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-12">
-              <label for="parent_field"
-                     class="form-label">Induk Kategori</label>
-              <input id="parent_field" class="form-control" type="text" name="parent"
-                     th:field="*{parent}">
-              <div class="text text-danger" th:if="${#fields.hasErrors('parent')}" th:errors="*{parent}"></div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary waves-effect waves-light">Simpan</button>
-        </div>
-      </form>
-    </div>&lt;!&ndash; /.modal-content &ndash;&gt;
-  </div>&lt;!&ndash; /.modal-dialog &ndash;&gt;
-</div>&lt;!&ndash; /.modal &ndash;&gt;-->
 
 <script th:src="@{/static/js/jquery-3.6.0.min.js}" type="text/javascript"></script>
 <script th:src="@{/static/js/metisMenu.js}" type="text/javascript"></script>

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Getter
@@ -19,6 +20,7 @@ public class Category {
     private Long id;
 
     @Column
+    @NotBlank(message = "Nama kategori tidak boleh kosong")
     private String name;
 
     @Column

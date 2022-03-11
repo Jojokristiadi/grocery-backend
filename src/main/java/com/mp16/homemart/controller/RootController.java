@@ -139,33 +139,51 @@ public class RootController {
 
     @GetMapping(value = "category")
     public String viewCategory(Model model){
-//        modelMap.put("categories", categoryService.getGetAllCategory());
         model.addAttribute("categories", categoryService.getGetAllCategory());
-//        model.addAttribute("categoryDTO", categoryDTO);
         return "category/category";
     }
 
-    @PostMapping(value = "add-category")
-    public String addClass(@Valid @ModelAttribute("categoryDTO") CategoryDTO categoryDTO, BindingResult result, RedirectAttributes atts) {
+    @GetMapping(value = "view-new-category")
+    public String viewNewCategory(@ModelAttribute CategoryDTO categoryDTO, Model model){
+        model.addAttribute("request", categoryDTO);
+        return "category/new_category";
+    }
+
+    @PostMapping(value = "new-category")
+    public String addNewCategory(@Valid @ModelAttribute("categoryDTO") CategoryDTO categoryDTO, BindingResult result) {
         if(result.hasErrors()) {
-            atts.addAttribute("hasErrors", true);
-            return "category/category";
-        }else{
-            categoryService.save(
-                    new Category(
-                            categoryDTO.getName(),
-                            categoryDTO.getParent()
-                    )
-            );
+            return "category/new_category";
         }
-        return "category/category";
+        categoryService.save(
+                new Category(
+                        categoryDTO.getName(),
+                        categoryDTO.getParent()
+                )
+        );
+        return "redirect:/category?addsuccess";
     }
 
-    @RequestMapping(value = "/delete/{id}")
+    @GetMapping(value = "view-edit-category/{id}")
+    public String viewEditCategory(@PathVariable (value = "id") long id, Model model){
+        Category category = categoryService.get(id);
+        model.addAttribute("categoryDTO", category);
+        return "category/edit_category";
+    }
+
+    @PostMapping(value = "/edit-category")
+    public String editCategory(@Valid @ModelAttribute("categoryDTO") Category category, BindingResult result) {
+        if(result.hasErrors()) {
+            return "category/edit_category";
+        }
+        categoryService.save(category);
+        return "redirect:/category?editsuccess";
+    }
+
+    @RequestMapping(value = "/delete-category/{id}")
     public String deleteProduct(@PathVariable(name = "id") int id /*RedirectAttributes redirectAttributes*/) {
         categoryService.delete(id);
         /*redirectAttributes.addFlashAttribute("swal_flag", "confirmDelete");*/
-        return "category/category";
+        return "redirect:/category?deletesuccess";
     }
 
 

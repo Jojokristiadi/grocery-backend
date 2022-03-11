@@ -36,10 +36,40 @@
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="d-flex">
-                <h4>Produk</h4>
+                <h4>Tambah Kategori Baru</h4>
             </div>
         </div>
     </div>
+    <form th:action="@{new-category}" method="post" th:object="${categoryDTO}">
+        <div class="row">
+            <div class="row mb-3">
+                <div class="col-4">
+                    <label for="name_field" class="form-label">Nama Kategori</label>
+                </div>
+                <div class="col-8">
+                    <input id="name_field" type="text" placeholder="Masukan nama kategori" name="name"
+                           class="form-control" th:field="*{name}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4">
+                    <label for="parent_field" class="form-label">Id Parent</label>
+                </div>
+                <div class="col-8">
+                    <input id="parent_field" type="text" placeholder="Masukan id parent" name="name"
+                           class="form-control" th:field="*{parent}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('parent')}" th:errors="*{parent}" class="invalid-feedback"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-end">
+                <button type="submit" class="btn btn-primary waves-effect waves-light">Simpan</button>
+                <a type="reset" th:href="@{category}" class="btn btn-secondary waves-effect waves-light m-l-5">Batal</a>
+            </div>
+        </div>
+    </form>
 </div>
 
 <script th:src="@{/static/js/jquery-3.6.0.min.js}" type="text/javascript"></script>
