@@ -26,8 +26,7 @@ public class Category {
     @Column
     private Long parent;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY,
-            cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private Collection<Product> products;
 
     public Category(String name, Long parent) {

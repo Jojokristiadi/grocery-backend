@@ -1,12 +1,16 @@
 package com.mp16.homemart.controller;
 
 import com.mp16.homemart.dto.CategoryDTO;
+import com.mp16.homemart.dto.ProductDTO;
 import com.mp16.homemart.dto.RegistrationRequestDTO;
 import com.mp16.homemart.model.AppUserRole;
 import com.mp16.homemart.model.Category;
+import com.mp16.homemart.model.Product;
 import com.mp16.homemart.model.User;
+import com.mp16.homemart.repository.CategoryRepository;
 import com.mp16.homemart.service.AppUserService;
 import com.mp16.homemart.service.CategoryService;
+import com.mp16.homemart.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +33,7 @@ public class RootController {
 
     private final AppUserService appUserService;
     private final CategoryService categoryService;
+    private final ProductService productService;
 
 
     @GetMapping(value = "/")
@@ -52,8 +57,7 @@ public class RootController {
 
     @GetMapping(value = "login")
     public String login(){
-        User user = getCurrentAuth();
-        if (user != null){
+        if (getCurrentAuth() != null){
             return "redirect:/";
         }
         return "auth/login";
@@ -127,9 +131,51 @@ public class RootController {
      * */
     @GetMapping(value = "product")
     public String viewProduct(Model model){
+        /*model.addAttribute("categories", categoryService.getGetAllCategory());*/
+        model.addAttribute("products", productService.getAllProduct());
         return "product/product";
     }
 
+    @GetMapping(value = "view-new-product")
+    public String viewNewProduct(@ModelAttribute Product productDTO, Model model){
+        model.addAttribute("productDTO", productDTO);
+        model.addAttribute("categories", categoryService.getGetAllCategory());
+        return "product/new_product";
+    }
+
+    @PostMapping(value = "new-product")
+    public String addNewProduct(@Valid @ModelAttribute("productDTO") Product product, BindingResult result, Model model){
+        if(result.hasErrors()) {
+            model.addAttribute("categories", categoryService.getGetAllCategory());
+            return "product/new_product";
+        }
+        productService.save(product);
+        return "redirect:/product?addsuccess";
+    }
+
+    @GetMapping(value = "view-edit-product/{id}")
+    public String viewEditProduct(@PathVariable (value = "id") long id, Model model){
+        Product product = productService.get(id);
+        model.addAttribute("categories", categoryService.getGetAllCategory());
+        model.addAttribute("productDTO", product);
+        return "product/edit_product";
+    }
+
+    @PostMapping(value = "/edit-product")
+    public String editProduct(@Valid @ModelAttribute("productDTO") Product product, BindingResult result, Model model) {
+        if(result.hasErrors()) {
+            model.addAttribute("categories", categoryService.getGetAllCategory());
+            return "product/edit_product";
+        }
+        productService.save(product);
+        return "redirect:/product?editsuccess";
+    }
+
+    @RequestMapping(value = "/delete-product/{id}")
+    public String deleteProduct(@PathVariable(name = "id") int id) {
+        productService.delete(id);
+        return "redirect:/product?deletesuccess";
+    }
 
     /*
      * *********************************
@@ -180,9 +226,8 @@ public class RootController {
     }
 
     @RequestMapping(value = "/delete-category/{id}")
-    public String deleteProduct(@PathVariable(name = "id") int id /*RedirectAttributes redirectAttributes*/) {
+    public String deleteCategory(@PathVariable(name = "id") int id) {
         categoryService.delete(id);
-        /*redirectAttributes.addFlashAttribute("swal_flag", "confirmDelete");*/
         return "redirect:/category?deletesuccess";
     }
 

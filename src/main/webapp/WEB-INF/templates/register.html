@@ -14,11 +14,7 @@
 </head>
 <body>
 
-<div th:if="${param.success}">
-    <div class="alert alert-success">
-        Yay! you're now registered
-    </div>
-</div>
+
     <div class="container-fluid p-0">
         <div class="row g-0">
             <div class="col-xxl-3 col-lg-4 col-md-5">
@@ -34,6 +30,11 @@
                                 <div class="text-center">
                                     <h5 class="mb-0">Daftar Akun Baru !</h5>
                                     <p class="text-muted mt-2">Daftarkan akun baru secara gratis.</p>
+                                </div>
+                                <div th:if="${param.success}">
+                                    <div class="alert alert-success">
+                                        Yay! you're now registered
+                                    </div>
                                 </div>
                                 <form class="custom-form mt-4 pt-2" th:action="@{/register}" method="post" th:object="${registrationRequestDTO}">
                                     <div class="mb-3">
