@@ -40,7 +40,6 @@ public class User implements UserDetails {
     @Length(min = 4, message = "Password harus minimal terdiri dari 4 karakter")
     private String password;
 
-    @NotBlank(message = "Konfirmasi password tidak boleh kosong")
     private String rpassword;
 
     @Enumerated(EnumType.STRING)
@@ -73,6 +72,14 @@ public class User implements UserDetails {
         this.role = role;
         this.locked = locked;
         this.enabled = enabled;
+    }
+
+    /*
+    * Override from user details
+    * yep i don't why but it worked
+    * */
+    public String getFullName(){
+        return getName();
     }
 
     @Override

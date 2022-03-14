@@ -123,6 +123,7 @@ public class RootController {
 
     @PostMapping(value = "new-product")
     public String addNewProduct(@Valid @ModelAttribute("productDTO") Product product, BindingResult result, Model model){
+        model.addAttribute("user", getCurrentAuth());
         if(result.hasErrors()) {
             model.addAttribute("categories", categoryService.getGetAllCategory());
             return "product/new_product";
@@ -142,6 +143,7 @@ public class RootController {
 
     @PostMapping(value = "/edit-product")
     public String editProduct(@Valid @ModelAttribute("productDTO") Product product, BindingResult result, Model model) {
+        model.addAttribute("user", getCurrentAuth());
         if(result.hasErrors()) {
             model.addAttribute("categories", categoryService.getGetAllCategory());
             return "product/edit_product";
@@ -177,7 +179,8 @@ public class RootController {
     }
 
     @PostMapping(value = "new-category")
-    public String addNewCategory(@Valid @ModelAttribute("categoryDTO") CategoryDTO categoryDTO, BindingResult result) {
+    public String addNewCategory(@Valid @ModelAttribute("categoryDTO") CategoryDTO categoryDTO, BindingResult result, Model model) {
+        model.addAttribute("user", getCurrentAuth());
         if(result.hasErrors()) {
             return "category/new_category";
         }
@@ -199,7 +202,8 @@ public class RootController {
     }
 
     @PostMapping(value = "/edit-category")
-    public String editCategory(@Valid @ModelAttribute("categoryDTO") Category category, BindingResult result) {
+    public String editCategory(@Valid @ModelAttribute("categoryDTO") Category category, BindingResult result, Model model) {
+        model.addAttribute("user", getCurrentAuth());
         if(result.hasErrors()) {
             return "category/edit_category";
         }
@@ -236,7 +240,8 @@ public class RootController {
     }
 
     @PostMapping(value = "new-user")
-    public String addNewUser(@Valid @ModelAttribute("userDTO") User userDTO, BindingResult result) {
+    public String addNewUser(@Valid @ModelAttribute("userDTO") User userDTO, BindingResult result, Model model) {
+        model.addAttribute("user", getCurrentAuth());
         if (validatingUser(userDTO, result).hasErrors() || result.hasErrors()) {
             return "user/new_user";
         }
@@ -253,7 +258,8 @@ public class RootController {
     }
 
     @PostMapping(value = "/edit-user")
-    public String editUser(@Valid @ModelAttribute("userDTO") User userDTO, BindingResult result) {
+    public String editUser(@Valid @ModelAttribute("userDTO") User userDTO, BindingResult result, Model model) {
+        model.addAttribute("user", getCurrentAuth());
         if (validatingUser(userDTO, result).hasErrors() || result.hasErrors()) {
             return "user/edit_user";
         }
